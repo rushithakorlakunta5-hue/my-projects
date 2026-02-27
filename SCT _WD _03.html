@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quiz Game Application</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1f1c2c, #928dab);
+            color: white;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .quiz-container {
+            background: rgba(0,0,0,0.6);
+            padding: 20px;
+            border-radius: 10px;
+            width: 60%;
+            margin: auto;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        .option {
+            margin: 10px 0;
+            display: block;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin-top: 15px;
+            border: none;
+            border-radius: 5px;
+            background: #ff9800;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: #e68900;
+        }
+
+        input[type="text"] {
+            padding: 8px;
+            width: 60%;
+            border-radius: 5px;
+            border: none;
+        }
+
+        #result {
+            font-size: 20px;
+            margin-top: 20px;
+            color: #00ffcc;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="quiz-container">
+        <h2 id="question">Question appears here</h2>
+        <div id="options"></div>
+        <button onclick="nextQuestion()">Next</button>
+        <div id="result"></div>
+    </div>
+
+<script>
+const quizData = [
+    {
+        type: "single",
+        question: "Which language is used for web development?",
+        options: ["Python", "HTML", "C++", "Java"],
+        answer: "HTML"
+    },
+    {
+        type: "multi",
+        question: "Select programming languages:",
+        options: ["Python", "Banana", "JavaScript", "Car"],
+        answer: ["Python", "JavaScript"]
+    },
+    {
+        type: "fill",
+        question: "Fill in the blank: CSS stands for ________ Style Sheets.",
+        answer: "Cascading"
+    }
+];
+
+let currentQuestion = 0;
+let score = 0;
+
+function loadQuestion() {
+    const questionEl = document.getElementById("question");
+    const optionsEl = document.getElementById("options");
+    optionsEl.innerHTML = "";
+
+    const current = quizData[currentQuestion];
+    questionEl.innerText = current.question;
+
+    if (current.type === "single") {
+        current.options.forEach(option => {
+            optionsEl.innerHTML += `
+                <label class="option">
+                    <input type="radio" name="answer" value="${option}">
+                    ${option}
+                </label>`;
+        });
+    }
+
+    else if (current.type === "multi") {
+        current.options.forEach(option => {
+            optionsEl.innerHTML += `
+                <label class="option">
+                    <input type="checkbox" name="answer" value="${option}">
+                    ${option}
+                </label>`;
+        });
+    }
+
+    else if (current.type === "fill") {
+        optionsEl.innerHTML = `
+            <input type="text" id="fillAnswer" placeholder="Type your answer here">
+        `;
+    }
+}
+
+function nextQuestion() {
+    const current = quizData[currentQuestion];
+    let userAnswer;
+
+    if (current.type === "single") {
+        const selected = document.querySelector('input[name="answer"]:checked');
+        if (!selected) return alert("Please select an answer!");
+        userAnswer = selected.value;
+        if (userAnswer === current.answer) score++;
+    }
+
+    else if (current.type === "multi") {
+        const selected = document.querySelectorAll('input[name="answer"]:checked');
+        userAnswer = Array.from(selected).map(el => el.value);
+        if (JSON.stringify(userAnswer.sort()) === JSON.stringify(current.answer.sort())) {
+            score++;
+        }
+    }
+
+    else if (current.type === "fill") {
+        userAnswer = document.getElementById("fillAnswer").value.trim();
+        if (userAnswer.toLowerCase() === current.answer.toLowerCase()) {
+            score++;
+        }
+    }
+
+    currentQuestion++;
+
+    if (currentQuestion < quizData.length) {
+        loadQuestion();
+    } else {
+        showResult();
+    }
+}
+
+function showResult() {
+    document.querySelector(".quiz-container").innerHTML = `
+        <h2>Quiz Completed!</h2>
+        <p>Your Score: ${score} / ${quizData.length}</p>
+        <button onclick="location.reload()">Restart Quiz</button>
+    `;
+}
+
+loadQuestion();
+</script>
+
+</body>
+</html>
