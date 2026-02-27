@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Responsive Landing Page</title>
+
+<style>
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Navigation Bar */
+nav {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    padding: 20px 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: transparent;
+    transition: 0.4s;
+    z-index: 1000;
+}
+
+/* Logo */
+nav .logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+}
+
+/* Menu */
+nav ul {
+    list-style: none;
+    display: flex;
+}
+
+nav ul li {
+    margin-left: 30px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+    transition: 0.3s;
+    padding: 5px 10px;
+}
+
+/* Hover Effect */
+nav ul li a:hover {
+    background: #00c6ff;
+    color: black;
+    border-radius: 5px;
+}
+
+/* Scroll Effect */
+nav.scrolled {
+    background: #111;
+    padding: 15px 50px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+}
+
+/* Sections */
+section {
+    height: 100vh;
+    padding-top: 100px;
+    text-align: center;
+    color: white;
+}
+
+#home {
+    background: linear-gradient(to right, #141e30, #243b55);
+}
+
+#about {
+    background: #1e3c72;
+}
+
+#services {
+    background: #2a5298;
+}
+
+#contact {
+    background: #000428;
+}
+
+/* Responsive */
+@media(max-width: 768px) {
+    nav {
+        padding: 15px 20px;
+    }
+
+    nav ul {
+        flex-direction: column;
+        background: #111;
+        position: absolute;
+        top: 70px;
+        right: 0;
+        width: 200px;
+        display: none;
+    }
+
+    nav ul.active {
+        display: flex;
+    }
+
+    nav ul li {
+        margin: 15px 0;
+        text-align: center;
+    }
+
+    .menu-toggle {
+        display: block;
+        cursor: pointer;
+        color: white;
+        font-size: 22px;
+    }
+}
+
+/* Hide toggle on desktop */
+.menu-toggle {
+    display: none;
+}
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+    <div class="logo">SkillCraft</div>
+    <div class="menu-toggle" id="menu-toggle">☰</div>
+    <ul id="menu">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#contact">Contact</a></li>
+    </ul>
+</nav>
+
+<section id="home">
+    <h1>Welcome to Our Landing Page</h1>
+</section>
+
+<section id="about">
+    <h1>About Us</h1>
+</section>
+
+<section id="services">
+    <h1>Our Services</h1>
+</section>
+
+<section id="contact">
+    <h1>Contact Us</h1>
+</section>
+
+<script>
+// Change navbar style on scroll
+window.addEventListener("scroll", function() {
+    const navbar = document.getElementById("navbar");
+    navbar.classList.toggle("scrolled", window.scrollY > 50);
+});
+
+// Mobile menu toggle
+const toggle = document.getElementById("menu-toggle");
+const menu = document.getElementById("menu");
+
+toggle.addEventListener("click", function() {
+    menu.classList.toggle("active");
+});
+</script>
+
+</body>
+</html>
